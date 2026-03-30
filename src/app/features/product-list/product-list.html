@@ -1,27 +1,47 @@
 
 <div class="container">
-  <div class="header">
-    <h1>BANCO</h1>
+
+  <div class="search-add-row">
+    <i class="fas fa-search search-icon"></i>
+    <div class="search-bar">
+      <input
+        type="text"
+        placeholder="Search..."
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="onSearch()"
+      />
+    </div>
+
+    <div class="add-button">
+      <button (click)="addProduct()"><i class="fas fa-plus"></i> Agregar</button>
+    </div>
   </div>
 
-  <div class="search-bar">
-    <input
-      type="text"
-      placeholder="Search..."
-      [(ngModel)]="searchTerm"
-      (ngModelChange)="onSearch()"
-    />
-  </div>
 
   <div class="table-responsive">
     <table class="product-table">
       <thead>
         <tr>
-          <th>Logo</th>
-          <th>Nombre del producto</th>
-          <th>Descripción</th>
-          <th>Fecha de liberación</th>
-          <th>Fecha de reestructuración</th>
+          <th>
+            Logo
+            <span class="info-icon" data-tooltip="Logo de producto"><i class="fas fa-info-circle"></i></span>
+          </th>
+          <th>
+            Nombre del producto
+            <span class="info-icon" data-tooltip="Nombre comercial del producto financiero"><i class="fas fa-info-circle"></i></span>
+          </th>
+          <th>
+            Descripción
+            <span class="info-icon" data-tooltip="Descripción detallada del producto"><i class="fas fa-info-circle"></i></span>
+          </th>
+          <th>
+            Fecha de liberación
+            <span class="info-icon" data-tooltip="Fecha en que el producto estará disponible para clientes"><i class="fas fa-info-circle"></i></span>
+          </th>
+          <th>
+            Fecha de reestructuración
+            <span class="info-icon" data-tooltip="Fecha de revisión de términos y condiciones"><i class="fas fa-info-circle"></i></span>
+          </th>
           <th></th>
         </tr>
       </thead>
@@ -34,9 +54,7 @@
                   {{ product.name.charAt(0) }}
                 </div>
               } @else {
-                <ng-template #logoImg>
-                  <img [src]="product.logo" [alt]="product.name" class="logo-img" />
-                </ng-template>
+                <img [src]="product.logo" [alt]="product.name" class="logo-img" />
               }
             </td>
             <td>{{ product.name }}</td>
@@ -92,9 +110,6 @@
 
   </div>
 
-  <div class="add-button">
-    <button (click)="addProduct()">Agregar</button>
-  </div>
 </div>
 
 <app-confirmation-modal

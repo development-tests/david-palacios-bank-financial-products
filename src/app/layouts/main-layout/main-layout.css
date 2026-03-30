@@ -1,0 +1,23 @@
+.layout {
+  min-height: 100vh;
+  background: #f5f5f5;
+  padding: 20px;
+  font-family: 'Segoe UI', 'Roboto', 'Poppins', sans-serif;
+}
+
+.app-header {
+  text-align: center;
+  margin-bottom: 30px;
+  h1 {
+    font-size: 32px;
+    font-weight: 700;
+    color: #1a3e60;
+    letter-spacing: 2px;
+  }
+}
+
+.app-main {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+

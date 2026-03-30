@@ -1,24 +1,29 @@
 import { AbstractControl, AsyncValidatorFn, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { Observable, of } from 'rxjs';
-import { map, catchError, debounceTime, switchMap } from 'rxjs/operators';
+import { map, catchError, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { ProductService } from '../../core/services/product.service';
 
 
 export const urlValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
-  const urlPattern = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
-  return control.value && !urlPattern.test(control.value) ? { invalidUrl: true } : null;
+  const value = control.value;
+  if (!value) return null;
+  try {
+    new URL(value);
+    return null;
+  } catch {
+    return { invalidUrl: true };
+  }
 };
-
 
 export const futureOrTodayDateValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
   const value = control.value;
   if (!value) return null;
-  const inputDate = new Date(value);
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  return inputDate >= today ? null : { pastDate: true };
-};
 
+  const today = new Date();
+  const todayStr = today.toISOString().split('T')[0];
+
+  return value >= todayStr ? null : { pastDate: true };
+};
 
 export const oneYearAfterValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
   const release = control.get('date_release')?.value;
@@ -28,19 +33,20 @@ export const oneYearAfterValidator: ValidatorFn = (control: AbstractControl): Va
   const revisionDate = new Date(revision);
   const expectedRevision = new Date(releaseDate);
   expectedRevision.setFullYear(expectedRevision.getFullYear() + 1);
-  if (revisionDate.getTime() === expectedRevision.getTime()) {
-    return null;
-  }
-  return { invalidRevision: true };
+  return revisionDate.getTime() === expectedRevision.getTime() ? null : { invalidRevision: true };
 };
 
 
 export const uniqueIdValidator = (productService: ProductService): AsyncValidatorFn => {
   return (control: AbstractControl): Observable<ValidationErrors | null> => {
-    if (!control.value) return of(null);
-    return productService.verifyId(control.value).pipe(
-      map((exists) => (exists ? { idExists: true } : null)),
-      catchError(() => of(null))
+    if (!control.value || control.value.length < 3) return of(null);
+    return of(control.value).pipe(
+      debounceTime(400),
+      distinctUntilChanged(),
+      switchMap(id => productService.verifyId(id).pipe(
+        map(exists => (exists ? { idExists: true } : null)),
+        catchError(() => of(null))
+      ))
     );
   };
 };

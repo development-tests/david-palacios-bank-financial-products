@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -40,7 +40,8 @@ export class ProductList implements OnInit {
   constructor (
     private productService: ProductService,
     private router: Router,
-    private toast: ToastService
+    private toast: ToastService,
+    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -55,8 +56,9 @@ export class ProductList implements OnInit {
         this.products = data;
         this.applyFilters();
         this.isLoading = false;
+        this.cdr.detectChanges();
       },
-      error: () => {
+      error: (err) => {
         //? Error handled by interceptor
         this.isLoading = false;
       }
@@ -113,6 +115,7 @@ export class ProductList implements OnInit {
     if ( !this.deleteProductId ) return;
     this.productService.delete( this.deleteProductId ).subscribe({
       next: () => {
+        this.cdr.detectChanges();
         this.toast.showSuccess('Product deleted successfully');
         this.loadProducts();
         this.deleteProductId = null;

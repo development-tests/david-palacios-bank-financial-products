@@ -5,7 +5,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { ProductService } from '../../core/services/product.service';
 import { ToastService } from '../../core/services/toast.service';
-import { Product } from '../../shared/models/product.model';
 import { urlValidator, futureOrTodayDateValidator, oneYearAfterValidator, uniqueIdValidator } from '../../shared/validators/custom-validators';
 
 
@@ -56,10 +55,11 @@ export class ProductForm implements OnInit {
     this.productForm.get('date_release')?.valueChanges.subscribe((releaseDate: string) => {
       if (releaseDate) {
         const revision = new Date(releaseDate);
+        revision.setFullYear(revision.getFullYear() + 1);
         const revisionStr = revision.toISOString().split('T')[0];
 
-        revision.setFullYear(revision.getFullYear() + 1);
         this.productForm.get('date_revision')?.setValue(revisionStr);
+        this.productForm.updateValueAndValidity();
       }
     });
   }
@@ -113,22 +113,34 @@ export class ProductForm implements OnInit {
   }
 
 
-  resetForm(): void {
-    if (this.isEdit) {
-      this.loadProduct(this.productId!);
-    } else {
-      this.productForm.reset();
-      this.productForm.get('id')?.setAsyncValidators(uniqueIdValidator(this.productService));
-      this.productForm.get('id')?.updateValueAndValidity();
-    }
-  }
+resetForm(): void {
+  if (this.isEdit) {
+    this.loadProduct(this.productId!);
+  } else {
+    this.productForm.reset();
 
+    this.productForm.get('id')?.setAsyncValidators(uniqueIdValidator(this.productService));
+    this.productForm.get('id')?.updateValueAndValidity();
+
+    this.productForm.updateValueAndValidity();
+  }
+}
+
+
+  isFieldInvalid(fieldName: string): boolean {
+    const control = this.productForm.get(fieldName);
+    return !!control && control.invalid && (control.touched || control.dirty);
+  }
 
   private markAllAsTouched(): void {
     Object.values(this.productForm.controls).forEach(control => {
       control.markAsTouched();
     });
     this.productForm.updateValueAndValidity();
+  }
+
+  goBack(): void {
+    this.router.navigate(['/']);
   }
 
 

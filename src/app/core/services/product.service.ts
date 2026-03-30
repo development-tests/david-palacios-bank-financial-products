@@ -21,7 +21,7 @@ export class ProductService {
 
   getAll(): Observable<Product[]> {
     return this.http.get< ApiResponse<Product[]> >( this.apiUrl ).pipe(
-      map( response => response.data || [] )
+      map( response => response.data || [])
     );
   }
 

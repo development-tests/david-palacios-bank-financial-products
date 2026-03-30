@@ -3,22 +3,20 @@ import { inject } from "@angular/core";
 import { catchError, throwError } from "rxjs";
 import { ToastService } from '../services/toast.service';
 
-export const errorInterceptor: HttpInterceptorFn = ( req, next ) => {
+export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   const toast = inject(ToastService);
-
   return next(req).pipe(
     catchError((error) => {
-      let errorMsg = 'An unexpected error occurred';
+      let errorMsg = 'Ocurrió un error inesperado';
+
       if (error.error?.message) {
-        errorMsg = error.error?.message;
+        errorMsg = error.error.message;
       } else if (error.message) {
         errorMsg = error.message;
       }
-
       toast.showError(errorMsg);
+      console.error('HTTP Error:', error);
       return throwError(() => error);
     })
   );
-
-
 };

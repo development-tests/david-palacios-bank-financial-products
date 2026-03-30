@@ -4,26 +4,36 @@ import { Subject } from 'rxjs';
 export interface ToastMessage {
   type: 'success' | 'error' | 'info';
   text: string;
-  id?: number;
 }
 
-
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class ToastService {
-  private toastSubject = new Subject<ToastMessage>();
+  private toastSubject = new Subject<ToastMessage | null>();
   toast$ = this.toastSubject.asObservable();
+  private timeoutId: any;
 
   showSuccess(message: string): void {
-    this.toastSubject.next({ type: 'success', text: message });
+    this.show({ type: 'success', text: message });
   }
 
   showError(message: string): void {
-    this.toastSubject.next({ type: 'error', text: message });
+    this.show({ type: 'error', text: message });
   }
 
   showInfo(message: string): void {
-    this.toastSubject.next({ type: 'info', text: message });
+    this.show({ type: 'info', text: message });
+  }
+
+  clear(): void {
+    if (this.timeoutId) clearTimeout(this.timeoutId);
+    this.toastSubject.next(null);
+  }
+
+  private show(message: ToastMessage): void {
+    this.clear();
+    this.toastSubject.next(message);
+    this.timeoutId = setTimeout(() => {
+      this.toastSubject.next(null);
+    }, 3000);
   }
 }

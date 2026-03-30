@@ -1,8 +1,15 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
+import { map } from 'rxjs/operators';
+
 import { Product } from "../../shared/models/product.model";
 import { environment } from "../../../environments/environments";
+
+interface ApiResponse<T> {
+  message?: string;
+  data?: T;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -13,19 +20,27 @@ export class ProductService {
   constructor( private http: HttpClient ) {}
 
   getAll(): Observable<Product[]> {
-    return this.http.get<Product[]>( this.apiUrl );
+    return this.http.get< ApiResponse<Product[]> >( this.apiUrl ).pipe(
+      map( response => response.data || [] )
+    );
   }
 
-  create( product: Omit<Product, 'id'> & { id: string } ): Observable<Product> {
-    return this.http.post<Product>( this.apiUrl, product );
+  create( product: Product): Observable<Product> {
+    return this.http.post< ApiResponse<Product> >( this.apiUrl, product ).pipe(
+      map( response => response.data! )
+    );
   }
 
   update( id: string, product: Partial<Product> ): Observable<Product> {
-    return this.http.put<Product>(`${this.apiUrl}/${id}`, product);
+    return this.http.put< ApiResponse<Product> >(`${this.apiUrl}/${id}`, product).pipe(
+      map( response => response.data! )
+    );
   }
 
   delete(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    return this.http.delete< ApiResponse<void> >(`${this.apiUrl}/${id}`).pipe(
+      map( () => void 0 )
+    );
   }
 
   verifyId(id: string): Observable<boolean> {

@@ -1,0 +1,105 @@
+
+<div class="container">
+  <div class="header">
+    <h1>BANCO</h1>
+  </div>
+
+  <div class="search-bar">
+    <input
+      type="text"
+      placeholder="Search..."
+      [(ngModel)]="searchTerm"
+      (ngModelChange)="onSearch()"
+    />
+  </div>
+
+  <div class="table-responsive">
+    <table class="product-table">
+      <thead>
+        <tr>
+          <th>Logo</th>
+          <th>Nombre del producto</th>
+          <th>Descripción</th>
+          <th>Fecha de liberación</th>
+          <th>Fecha de reestructuración</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (product of paginatedProducts; track $index) {
+          <tr>
+            <td class="logo-cell">
+              @if (!product.logo) {
+                <div class="logo-placeholder">
+                  {{ product.name.charAt(0) }}
+                </div>
+              } @else {
+                <ng-template #logoImg>
+                  <img [src]="product.logo" [alt]="product.name" class="logo-img" />
+                </ng-template>
+              }
+            </td>
+            <td>{{ product.name }}</td>
+            <td>{{ product.description }}</td>
+            <td>{{ product.date_release | date:'dd/MM/yyyy' }}</td>
+            <td>{{ product.date_revision | date:'dd/MM/yyyy' }}</td>
+            <td class="actions-cell">
+              <app-dropdown-menu
+                [productId]="product.id"
+                (edit)="editProduct($event)"
+                (delete)="confirmDelete($event, product.name)"
+              ></app-dropdown-menu>
+            </td>
+          </tr>
+        }
+        @if (paginatedProducts.length === 0 && !isLoading) {
+          <tr>
+            <td colspan="6" class="no-results">No se encontraron productos</td>
+          </tr>
+        }
+
+        @if (isLoading) {
+          <tr>
+            <td colspan="6" class="loading-cell">
+              @for ( _ of [].constructor(pageSize); track $index) {
+                <div class="skeleton-row">
+                  <div class="skeleton-cell"></div>
+                </div>
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <div class="footer">
+    <div class="results-info">{{ filteredProducts.length }} Resultados</div>
+
+    <div class="pagination-controls">
+      <label>Mostrar:</label>
+      <select [(ngModel)]="pageSize" (change)="onPageSizeChange()">
+        @for (size of pageSizes; track $index) {
+          <option [value]="size">{{ size }}</option>
+        }
+      </select>
+      <app-pagination
+        [currentPage]="currentPage"
+        [totalPages]="totalPages"
+        (pageChange)="onPageChange($event)"
+      ></app-pagination>
+    </div>
+
+  </div>
+
+  <div class="add-button">
+    <button (click)="addProduct()">Agregar</button>
+  </div>
+</div>
+
+<app-confirmation-modal
+  [title]="deleteProductTitle"
+  [visible]="!!deleteProductId"
+  (confirm)="deleteProduct()"
+  (cancel)="cancelDelete()"
+></app-confirmation-modal>

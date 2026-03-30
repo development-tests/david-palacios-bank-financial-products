@@ -1,0 +1,25 @@
+
+@if (toastService.toast$ | async; as message) {
+  <div class="toast-container">
+     <div class="toast" [class]="'toast-' + message.type">
+       <div class="toast-content">
+         <span class="toast-icon">
+          @switch (message.type) {
+            @case ('success') {
+              <i class="fas fa-check-circle"></i>
+            }
+            @case ('error') {
+              <i class="fas fa-times-circle"></i>
+            }
+            @case ('info') {
+              <i class="fas fa-info-circle"></i>
+            }
+          }
+         </span>
+         <span class="toast-text">{{ message.text }}</span>
+         <button class="toast-close" (click)="close()">×</button>
+       </div>
+     </div>
+   </div>
+}
+

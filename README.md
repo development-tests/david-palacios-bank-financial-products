@@ -141,3 +141,20 @@ Si deseas ejecutar las pruebas en modo watch (se actualizan automáticamente al 
 ## Licencia
 
 Este proyecto es parte de una prueba técnica y no tiene licencia definida.
+
+## 📸 Galería de capturas de pantalla
+
+A continuación se muestran las principales vistas y funcionalidades de la aplicación.
+
+<div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-around;">
+  <img src="./screenshots/Lista%20de%20productos.png" alt="Listado" width="300">
+  <img src="./screenshots/Lista%20de%20productos%20busqueda.png" alt="Búsqueda" width="300">
+  <img src="./screenshots/Formulario%20de%20registro.png" alt="Formulario registro" width="300">
+  <img src="./screenshots/Formulario%20de%20edicion.png" alt="Formulario edición" width="300">
+  <img src="./screenshots/Validaciones.png" alt="Validaciones" width="300">
+  <img src="./screenshots/diferentes%20imagenes.png" alt="Menú contextual" width="300">
+  <img src="./screenshots/Ventana%20de%20confirmacion%20a%20eliminar.png" alt="Modal" width="300">
+  <img src="./screenshots/Toast%20de%20alertas.png" alt="Toast creación" width="300">
+  <img src="./screenshots/Toast%20de%20alertas%20edicion.png" alt="Toast edición" width="300">
+  <img src="./screenshots/Toast%20de%20alertas%20eliminacion.png" alt="Toast eliminación" width="300">
+</div>

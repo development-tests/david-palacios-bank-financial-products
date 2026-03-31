@@ -1,0 +1,6 @@
+
+<div class="pagination">
+  <button (click)="prev()" [disabled]="currentPage === 1">«</button>
+  <span>Página {{ currentPage }} de {{ totalPages }}</span>
+  <button (click)="next()" [disabled]="currentPage === totalPages">»</button>
+</div>

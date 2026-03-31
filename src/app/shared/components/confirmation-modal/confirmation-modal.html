@@ -1,0 +1,14 @@
+
+@if (visible) {
+  <div class="modal-overlay">
+    <div class="modal">
+      <div class="modal-content">
+        <p>¿Estás seguro de eliminar el producto {{ title }}?</p>
+        <div class="modal-actions">
+          <button class="btn-cancel" (click)="cancel.emit()"><i class="fas fa-times"></i> Cancelar</button>
+          <button class="btn-confirm" (click)="confirm.emit()"><i class="fas fa-trash-alt"></i> Confirmar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+}

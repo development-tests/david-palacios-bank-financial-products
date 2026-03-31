@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
-import { ProductService } from '../../core/services/product.service';
-import { ToastService } from '../../core/services/toast.service';
+import { ProductService } from '../../core/services/product/product.service';
+import { ToastService } from '../../core/services/toast/toast.service';
 
 import { Product } from '../../shared/models/product.model';
 import { DropdownMenu } from '../../shared/components/dropdown-menu/dropdown-menu';

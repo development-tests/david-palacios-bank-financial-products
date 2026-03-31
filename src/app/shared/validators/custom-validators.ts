@@ -1,7 +1,7 @@
 import { AbstractControl, AsyncValidatorFn, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { map, catchError, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
-import { ProductService } from '../../core/services/product.service';
+import { ProductService } from '../../core/services/product/product.service';
 
 
 export const urlValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {

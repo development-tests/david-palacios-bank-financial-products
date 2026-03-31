@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { ProductService } from '../../core/services/product.service';
-import { ToastService } from '../../core/services/toast.service';
+import { ProductService } from '../../core/services/product/product.service';
+import { ToastService } from '../../core/services/toast/toast.service';
 import { urlValidator, futureOrTodayDateValidator, oneYearAfterValidator, uniqueIdValidator } from '../../shared/validators/custom-validators';
 
 
@@ -100,6 +100,9 @@ export class ProductForm implements OnInit {
         next: () => {
           this.toast.showSuccess('Product updated successfully');
           this.router.navigate(['/']);
+        },
+        error: () => {
+          this.toast.showError('Error updating product');
         }
       });
     } else {
@@ -107,6 +110,9 @@ export class ProductForm implements OnInit {
         next: () => {
           this.toast.showSuccess('Product created successfully');
           this.router.navigate(['/']);
+        },
+        error: () => {
+          this.toast.showError('Error creating product');
         }
       });
     }

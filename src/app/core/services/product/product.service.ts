@@ -3,8 +3,8 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { map } from 'rxjs/operators';
 
-import { Product } from "../../shared/models/product.model";
-import { environment } from "../../../environments/environments";
+import { Product } from "../../../shared/models/product.model";
+import { environment } from "../../../../environments/environments";
 
 interface ApiResponse<T> {
   message?: string;

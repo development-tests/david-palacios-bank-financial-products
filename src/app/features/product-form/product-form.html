@@ -108,7 +108,7 @@
           type="date"
           formControlName="date_revision"
           [class.error-input]="productForm.errors?.['invalidRevision']"
-          readonly [disabled]="true"
+          readonly
         />
         @if (productForm.errors?.['invalidRevision']) {
           <div class="error-message">

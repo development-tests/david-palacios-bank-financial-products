@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter, ElementRef, HostListener, OnDes
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
 
-import { DropdownService } from '../../../core/services/dropdown.service';
+import { DropdownService } from '../../../core/services/dropdown/dropdown.service';
 
 @Component({
   selector: 'app-dropdown-menu',
